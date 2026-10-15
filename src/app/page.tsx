@@ -1,3 +1,4 @@
+import { JsonLd } from "@/components/json-ld";
 import { About } from "@/components/sections/about";
 import { Contact } from "@/components/sections/contact";
 import { Hero } from "@/components/sections/hero";
@@ -9,6 +10,7 @@ import { StackMarquee } from "@/components/sections/stack-marquee";
 export default function Home() {
   return (
     <main>
+      <JsonLd />
       <Hero />
       <StackMarquee />
       <Services />

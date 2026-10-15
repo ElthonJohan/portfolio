@@ -14,7 +14,15 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps<"/proyectos/[slug]">): Promise<Metadata> {
   const project = getProject((await params).slug);
   if (!project) return {};
-  return { title: project.title, description: project.summary };
+  const url = `/proyectos/${project.slug}`;
+  const title = `${project.title} — ${project.category}`;
+  return {
+    title,
+    description: project.summary,
+    alternates: { canonical: url },
+    openGraph: { type: "article", url, title, description: project.summary },
+    twitter: { title, description: project.summary },
+  };
 }
 
 export default async function ProjectPage({ params }: PageProps<"/proyectos/[slug]">) {

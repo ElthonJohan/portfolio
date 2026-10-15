@@ -17,30 +17,46 @@ const instrumentSerif = Instrument_Serif({
   style: ["normal", "italic"],
 });
 
+const defaultTitle = `${profile.name} — ${profile.role} | ${profile.brand}`;
+const description = `${profile.tagline} ${profile.role} en ${profile.location}.`;
+
 export const metadata: Metadata = {
   metadataBase: new URL(profile.siteUrl),
   title: {
-    default: `${profile.brand} — ${profile.role}`,
-    template: `%s — ${profile.brand}`,
+    default: defaultTitle,
+    template: `%s | ${profile.brand}`,
   },
-  description: profile.tagline,
+  description,
   keywords: [
+    profile.name,
+    profile.brand,
+    "desarrollador de software",
     "desarrollador web",
     "ingeniero de sistemas",
     "software a medida",
-    "desarrollo de aplicaciones",
     "sistemas empresariales",
+    "desarrollo de aplicaciones",
     "freelance",
+    "Cajamarca",
+    "Perú",
   ],
-  authors: [{ name: profile.name }],
+  authors: [{ name: profile.name, url: profile.siteUrl }],
+  creator: profile.name,
+  alternates: { canonical: "/" },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1 },
+  },
   openGraph: {
     type: "website",
-    locale: "es",
+    locale: "es_PE",
+    url: "/",
     siteName: profile.brand,
-    title: `${profile.brand} — ${profile.role}`,
-    description: profile.tagline,
+    title: defaultTitle,
+    description,
   },
-  twitter: { card: "summary_large_image" },
+  twitter: { card: "summary_large_image", title: defaultTitle, description },
 };
 
 export const viewport: Viewport = {
