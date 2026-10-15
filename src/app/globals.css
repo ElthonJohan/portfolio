@@ -1,26 +1,137 @@
 @import "tailwindcss";
+@import "lenis/dist/lenis.css";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #08080a;
+  --bg-elev: #111114;
+  --line: rgb(255 255 255 / 0.08);
+  --fg: #ededea;
+  --muted: #8a8a90;
+  --accent: #c8ff3d;
+  --accent-ink: #0b0d02;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-bg: var(--bg);
+  --color-bg-elev: var(--bg-elev);
+  --color-line: var(--line);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-serif: var(--font-instrument-serif);
+  --ease-out-expo: var(--ease-out);
+  --animate-marquee: marquee var(--marquee-duration, 30s) linear infinite;
+  --animate-pulse-dot: pulse-dot 2s var(--ease-out) infinite;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
   }
 }
 
+@keyframes pulse-dot {
+  0% {
+    box-shadow: 0 0 0 0 rgb(200 255 61 / 0.6);
+  }
+  100% {
+    box-shadow: 0 0 0 10px rgb(200 255 61 / 0);
+  }
+}
+
+html {
+  background: var(--bg);
+  color-scheme: dark;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+/* El cursor personalizado reemplaza al nativo sólo en dispositivos con puntero fino */
+@media (pointer: fine) {
+  html.has-cursor,
+  html.has-cursor * {
+    cursor: none !important;
+  }
+}
+
+/* Grano sutil sobre toda la página para dar textura "analógica" */
+.grain {
+  pointer-events: none;
+  position: fixed;
+  inset: -50%;
+  z-index: 60;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain 8s steps(10) infinite;
+}
+
+@keyframes grain {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-5%, -10%); }
+  30% { transform: translate(3%, -15%); }
+  50% { transform: translate(12%, 9%); }
+  70% { transform: translate(9%, 4%); }
+  90% { transform: translate(-1%, 7%); }
+}
+
+.text-outline {
+  color: transparent;
+  -webkit-text-stroke: 1px rgb(255 255 255 / 0.25);
+}
+
+/* ---------- View transitions (tarjeta de proyecto -> detalle) ---------- */
+::view-transition-group(.morph) {
+  animation-duration: 650ms;
+  animation-timing-function: var(--ease-out);
+}
+::view-transition-image-pair(.morph) {
+  animation-name: via-blur;
+}
+@keyframes via-blur {
+  30% {
+    filter: blur(4px);
+  }
+}
+
+::view-transition-old(.page-fade) {
+  animation: 220ms ease-in both vt-fade reverse;
+}
+::view-transition-new(.page-fade) {
+  animation: 500ms var(--ease-out) 120ms both vt-fade, 600ms var(--ease-out) 120ms both vt-rise;
+}
+@keyframes vt-fade {
+  from { opacity: 0; filter: blur(6px); }
+  to { opacity: 1; filter: blur(0); }
+}
+@keyframes vt-rise {
+  from { transform: translateY(24px); }
+  to { transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
 }
