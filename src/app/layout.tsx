@@ -49,7 +49,19 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="es" className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} antialiased`}>
+    <html
+      lang="es"
+      className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} antialiased`}
+      suppressHydrationWarning
+    >
+      <head>
+        {/* Antes del primer pintado: si el preloader ya se vio en esta sesión, se oculta sin parpadeo */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{if(sessionStorage.getItem("intro-seen")==="1")document.documentElement.dataset.intro="seen"}catch(e){}`,
+          }}
+        />
+      </head>
       <body className="min-h-svh overflow-x-clip">
         <Providers>
           <Preloader />

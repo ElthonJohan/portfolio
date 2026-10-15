@@ -18,7 +18,7 @@ export function SmoothLink({ href, onClick, ...props }: ComponentProps<typeof Li
         const hash = href.startsWith("/#") ? href.slice(1) : href.startsWith("#") ? href : null;
         if (hash && pathname === "/" && lenis) {
           e.preventDefault();
-          lenis.scrollTo(hash === "#top" ? 0 : hash, { offset: -80, duration: 1.4 });
+          lenis.scrollTo(hash === "#top" ? 0 : hash, { offset: -80, duration: 1.1 });
           history.replaceState(null, "", hash === "#top" ? "/" : hash);
         }
       }}

@@ -36,7 +36,7 @@ function VelocityRow({ items, baseVelocity }: { items: string[]; baseVelocity: n
 
   return (
     <div className="flex overflow-hidden whitespace-nowrap">
-      <motion.div className="flex shrink-0" style={{ x, skewX: skew }}>
+      <motion.div className="flex shrink-0 will-change-transform" style={{ x, skewX: skew }}>
         {[0, 1].map((copy) => (
           <div key={copy} className="flex shrink-0" aria-hidden={copy === 1}>
             {items.map((item, i) => (

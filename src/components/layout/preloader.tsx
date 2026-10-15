@@ -1,78 +1,51 @@
 "use client";
 
-import { AnimatePresence, animate, motion } from "motion/react";
 import { useEffect, useState } from "react";
-import { useFinishIntro } from "@/components/providers";
-import { useMediaQuery } from "@/lib/hooks";
 import { profile } from "@/data/site";
 
-const EASE = [0.76, 0, 0.24, 1] as const;
+export const INTRO_KEY = "intro-seen";
 
-/** Pantalla de carga inicial: contador 0→100 y una cortina que sube revelando el sitio. */
+/**
+ * Pantalla de carga inicial: contador 0→100 y una cortina que sube revelando el sitio.
+ * La animación es CSS pura (ver `.preloader` en globals.css), así empieza en el primer
+ * pintado aunque el JavaScript del celular aún esté cargando. Se muestra una vez por sesión.
+ */
 export function Preloader() {
-  const finish = useFinishIntro();
-  const [count, setCount] = useState(0);
-  const [visible, setVisible] = useState(true);
-  const reduced = useMediaQuery("(prefers-reduced-motion: reduce)");
+  const [gone, setGone] = useState(false);
 
   useEffect(() => {
-    if (reduced) {
-      finish();
-      return;
-    }
-    const controls = animate(0, 100, {
-      duration: 1.6,
-      ease: [0.65, 0, 0.35, 1],
-      onUpdate: (v) => setCount(Math.round(v)),
-      onComplete: () => {
-        setVisible(false);
-        window.setTimeout(finish, 350);
-      },
-    });
-    return () => controls.stop();
-  }, [reduced, finish]);
+    try {
+      sessionStorage.setItem(INTRO_KEY, "1");
+    } catch {}
+    // Al terminar la cortina se quita del DOM.
+    const id = window.setTimeout(() => setGone(true), 2200);
+    return () => window.clearTimeout(id);
+  }, []);
+
+  if (gone) return null;
 
   return (
-    <AnimatePresence>
-      {visible && !reduced && (
-        <motion.div
-          className="fixed inset-0 z-[90] flex flex-col justify-between bg-[#0d0d10] p-6 sm:p-10"
-          exit={{ clipPath: "inset(0 0 100% 0)" }}
-          initial={{ clipPath: "inset(0 0 0% 0)" }}
-          transition={{ duration: 0.9, ease: EASE }}
-        >
-          <motion.div
-            className="flex items-center justify-between font-mono text-xs tracking-widest text-muted uppercase"
-            exit={{ opacity: 0 }}
-          >
-            <span>{profile.brand}</span>
-            <span>Portfolio</span>
-          </motion.div>
+    <div
+      aria-hidden
+      className="preloader pointer-events-none fixed inset-0 z-90 flex flex-col justify-between bg-[#0d0d10] p-6 sm:p-10"
+    >
+      <div className="preloader-fade flex items-center justify-between font-mono text-xs tracking-widest text-muted uppercase">
+        <span>{profile.brand}</span>
+        <span>Portfolio</span>
+      </div>
 
-          <div className="flex items-end justify-between gap-6">
-            <motion.p
-              className="max-w-xs font-serif text-2xl text-fg/70 italic sm:text-3xl"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.8, ease: EASE }}
-            >
-              Ingeniería & software a medida
-            </motion.p>
-            <motion.span
-              className="font-sans text-[22vw] leading-[0.8] font-medium tracking-tighter tabular-nums sm:text-[14vw]"
-              exit={{ y: -60, opacity: 0 }}
-              transition={{ duration: 0.6, ease: EASE }}
-            >
-              {count}
-              <span className="text-accent">%</span>
-            </motion.span>
-          </div>
-          <div className="absolute inset-x-0 bottom-0 h-[2px] bg-white/5">
-            <div className="h-full bg-accent" style={{ width: `${count}%` }} />
-          </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+      <div className="flex items-end justify-between gap-6">
+        <p className="preloader-fade max-w-xs font-serif text-2xl text-fg/70 italic sm:text-3xl">
+          Ingeniería & software a medida
+        </p>
+        <span className="preloader-fade font-sans text-[22vw] leading-[0.8] font-medium tracking-tighter tabular-nums sm:text-[14vw]">
+          <span className="preloader-count" />
+          <span className="text-accent">%</span>
+        </span>
+      </div>
+      <div className="absolute inset-x-0 bottom-0 h-[2px] bg-white/5">
+        <div className="preloader-bar h-full bg-accent" />
+      </div>
+    </div>
   );
 }

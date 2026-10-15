@@ -35,7 +35,7 @@ function ProjectCard({
     <div ref={ref} className="sticky top-0 flex h-svh items-center justify-center">
       <motion.article
         style={{ scale, top: `calc(5vh + ${index * 28}px)` }}
-        className="relative w-full origin-top overflow-hidden rounded-[2rem] border border-line bg-bg-elev"
+        className="relative w-full origin-top overflow-hidden rounded-[2rem] border border-line bg-bg-elev will-change-transform"
       >
         <Link
           href={`/proyectos/${project.slug}`}
@@ -69,7 +69,7 @@ function ProjectCard({
           </div>
           <div className="relative aspect-[4/3] overflow-hidden md:aspect-auto md:min-h-[460px]">
             <ViewTransition name={`cover-${project.slug}`} share="morph" default="none">
-              <motion.div style={{ scale: imageScale }} className="absolute inset-0">
+              <motion.div style={{ scale: imageScale }} className="absolute inset-0 will-change-transform">
                 <div className="size-full transition-transform duration-1000 ease-out-expo group-hover:scale-105">
                   <ProjectCover project={project} />
                 </div>

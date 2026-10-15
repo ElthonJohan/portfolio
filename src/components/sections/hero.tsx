@@ -3,17 +3,14 @@
 import { ArrowDownRight, ArrowUpRight } from "lucide-react";
 import { motion, useMotionTemplate, useMotionValue, useScroll, useSpring, useTransform } from "motion/react";
 import { useRef } from "react";
-import { useIntroDone } from "@/components/providers";
 import { Magnetic } from "@/components/ui/magnetic";
-import { SplitHeading } from "@/components/ui/reveal";
 import { SmoothLink } from "@/components/ui/smooth-link";
 import { profile } from "@/data/site";
 
-const EASE = [0.16, 1, 0.3, 1] as const;
+const HEADLINE = "Construyo software que impulsa a tu empresa a crecer.";
 const ACCENT_WORDS = new Set(["impulsa", "crecer."]);
 
 export function Hero() {
-  const introDone = useIntroDone();
   const ref = useRef<HTMLElement>(null);
 
   // Parallax de salida: el hero se encoge y se desvanece al hacer scroll.
@@ -28,10 +25,10 @@ export function Hero() {
   const spotlight = useMotionTemplate`radial-gradient(600px circle at ${mx}% ${my}%, rgb(200 255 61 / 0.12), transparent 60%)`;
   const gridMask = useMotionTemplate`radial-gradient(500px circle at ${mx}% ${my}%, black, transparent 70%)`;
 
-  const fadeUp = (delay: number) => ({
-    initial: { opacity: 0, y: 30 },
-    animate: introDone ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 },
-    transition: { duration: 1.1, delay, ease: EASE },
+  // Entrada del hero en CSS (ver `.intro-*` en globals.css): visible sin esperar a JavaScript.
+  const fadeUp = (delayMs: number) => ({
+    className: "intro-fade",
+    style: { "--d": `${delayMs}ms` } as React.CSSProperties,
   });
 
   return (
@@ -57,7 +54,7 @@ export function Hero() {
           }}
         />
         <motion.div
-          className="absolute inset-0 opacity-30"
+          className="absolute inset-0 hidden opacity-30 pointer-fine:block"
           style={{
             backgroundImage:
               "linear-gradient(rgb(200 255 61) 1px, transparent 1px), linear-gradient(90deg, rgb(200 255 61) 1px, transparent 1px)",
@@ -66,45 +63,54 @@ export function Hero() {
             WebkitMaskImage: gridMask,
           }}
         />
-        <motion.div className="absolute inset-0" style={{ background: spotlight }} />
-        <motion.div
-          className="absolute -top-40 -right-40 size-[38rem] rounded-full bg-accent/20 blur-[140px]"
-          animate={{ x: [0, -60, 0], y: [0, 40, 0] }}
-          transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
+        <motion.div className="absolute inset-0 hidden pointer-fine:block" style={{ background: spotlight }} />
+        {/* Manchas de luz: gradientes radiales (no `filter: blur`, que es muy costoso en móviles).
+            Sólo se mueven en escritorio; en táctil quedan estáticas. */}
+        <div
+          className="absolute -top-[30%] -right-[25%] size-[60rem] max-w-none rounded-full pointer-fine:animate-[float-a_14s_ease-in-out_infinite]"
+          style={{ background: "radial-gradient(closest-side, rgb(200 255 61 / 0.16), transparent)" }}
         />
-        <motion.div
-          className="absolute -bottom-60 -left-40 size-[34rem] rounded-full bg-[#5b3dff]/20 blur-[140px]"
-          animate={{ x: [0, 80, 0], y: [0, -30, 0] }}
-          transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+        <div
+          className="absolute -bottom-[40%] -left-[25%] size-[56rem] max-w-none rounded-full pointer-fine:animate-[float-b_18s_ease-in-out_infinite]"
+          style={{ background: "radial-gradient(closest-side, rgb(91 61 255 / 0.18), transparent)" }}
         />
       </div>
 
-      <motion.div style={{ scale, opacity, y }} className="relative mx-auto w-full max-w-7xl origin-bottom">
-        <motion.div {...fadeUp(0.1)} className="mb-8 flex flex-wrap items-center gap-3">
+      <motion.div style={{ scale, opacity, y }} className="relative mx-auto w-full max-w-7xl origin-bottom will-change-transform">
+        <div {...fadeUp(100)} className="intro-fade mb-8 flex flex-wrap items-center gap-3">
           {profile.available && (
-            <span className="inline-flex items-center gap-2 rounded-full border border-line bg-white/[0.03] px-3 py-1.5 text-xs text-fg/80 backdrop-blur">
+            <span className="inline-flex items-center gap-2 rounded-full border border-line bg-white/[0.04] px-3 py-1.5 text-xs text-fg/80">
               <span className="size-2 animate-pulse-dot rounded-full bg-accent" />
               Disponible para nuevos proyectos
             </span>
           )}
           <span className="font-mono text-xs tracking-wider text-muted uppercase">{profile.location}</span>
-        </motion.div>
+        </div>
 
-        <SplitHeading
-          as="h1"
-          animate={introDone}
-          text="Construyo software que impulsa a tu empresa a crecer."
+        <h1
+          aria-label={HEADLINE}
           className="max-w-6xl text-[13vw] leading-[0.92] font-medium tracking-[-0.045em] sm:text-[9vw] lg:text-[7.6rem]"
-          wordClassName={(w) => (ACCENT_WORDS.has(w) ? "font-serif font-normal italic text-accent tracking-[-0.02em]" : undefined)}
-        />
+        >
+          {HEADLINE.split(" ").map((w, i, all) => (
+            <span key={i} aria-hidden className="-mb-[0.12em] inline-flex overflow-hidden pb-[0.12em] align-top">
+              <span
+                className={`intro-word ${ACCENT_WORDS.has(w) ? "font-serif font-normal tracking-[-0.02em] text-accent italic" : ""}`}
+                style={{ "--i": i } as React.CSSProperties}
+              >
+                {w}
+                {i < all.length - 1 && "\u00a0"}
+              </span>
+            </span>
+          ))}
+        </h1>
 
         <div className="mt-12 grid gap-10 border-t border-line pt-8 md:grid-cols-[1.2fr_1fr] md:items-end">
-          <motion.div {...fadeUp(0.5)}>
+          <div {...fadeUp(350)}>
             <p className="font-mono text-xs tracking-wider text-accent uppercase">{profile.role}</p>
             <p className="mt-3 max-w-xl text-lg leading-relaxed text-fg/70 sm:text-xl">{profile.tagline}</p>
-          </motion.div>
+          </div>
 
-          <motion.div {...fadeUp(0.65)} className="flex flex-wrap items-center gap-3 md:justify-end">
+          <div {...fadeUp(450)} className="intro-fade flex flex-wrap items-center gap-3 md:justify-end">
             <Magnetic>
               <SmoothLink
                 href="/#proyectos"
@@ -125,16 +131,14 @@ export function Hero() {
                 <ArrowUpRight className="size-4 transition-transform duration-500 ease-out-expo group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </SmoothLink>
             </Magnetic>
-          </motion.div>
+          </div>
         </div>
       </motion.div>
 
-      <motion.div
+      <div
         aria-hidden
-        className="absolute right-6 bottom-12 hidden flex-col items-center gap-3 lg:flex"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: introDone ? 1 : 0 }}
-        transition={{ delay: 1.2, duration: 1 }}
+        {...fadeUp(800)}
+        className="intro-fade absolute right-6 bottom-12 hidden flex-col items-center gap-3 lg:flex"
       >
         <span className="font-mono text-[10px] tracking-[0.3em] text-muted uppercase [writing-mode:vertical-rl]">Scroll</span>
         <span className="relative h-16 w-px overflow-hidden bg-line">
@@ -144,7 +148,7 @@ export function Hero() {
             transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
           />
         </span>
-      </motion.div>
+      </div>
     </section>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useScroll, useSpring, useTransform } from "motion/react";
+import { motion, useScroll, useTransform } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import { process } from "@/data/site";
 
@@ -28,9 +28,8 @@ export function Process() {
   }, []);
 
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
-  const smooth = useSpring(scrollYProgress, { stiffness: 120, damping: 30, mass: 0.3 });
-  const x = useTransform(smooth, [0.05, 0.95], [0, -distance]);
-  const bar = useTransform(smooth, [0, 1], ["0%", "100%"]);
+  const x = useTransform(scrollYProgress, [0.05, 0.95], [0, -distance]);
+  const bar = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
 
   return (
     <section id="proceso" ref={ref} className="relative mt-28 sm:mt-40" style={{ height: `${process.length * 80}vh` }}>
@@ -53,7 +52,7 @@ export function Process() {
           </div>
         </div>
 
-        <motion.ol ref={track} style={{ x }} className="flex w-max gap-4 px-4 sm:gap-6 sm:px-[max(1.5rem,calc((100vw-80rem)/2+1.5rem))]">
+        <motion.ol ref={track} style={{ x }} className="flex w-max will-change-transform gap-4 px-4 sm:gap-6 sm:px-[max(1.5rem,calc((100vw-80rem)/2+1.5rem))]">
           {process.map((step, i) => (
             <li
               key={step.title}

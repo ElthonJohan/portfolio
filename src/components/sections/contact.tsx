@@ -51,13 +51,17 @@ export function Contact() {
 
   return (
     <section id="contacto" ref={ref} className="relative overflow-hidden px-4 pt-28 pb-16 sm:px-6 sm:pt-40">
-      <div aria-hidden className="absolute inset-x-0 top-1/3 -z-10 mx-auto size-[40rem] rounded-full bg-accent/10 blur-[160px]" />
+      <div
+        aria-hidden
+        className="absolute inset-x-0 top-1/4 -z-10 mx-auto size-[60rem] max-w-none rounded-full"
+        style={{ background: "radial-gradient(closest-side, rgb(200 255 61 / 0.08), transparent)" }}
+      />
       <div className="mx-auto max-w-7xl">
         <p className="font-mono text-xs tracking-widest text-muted uppercase">(05) — Contacto</p>
 
         <motion.h2
           style={{ x }}
-          className="mt-6 text-[17vw] leading-[0.85] font-medium tracking-[-0.06em] whitespace-nowrap lg:text-[13rem]"
+          className="mt-6 text-[17vw] leading-[0.85] font-medium tracking-[-0.06em] whitespace-nowrap will-change-transform lg:text-[13rem]"
         >
           Hablemos<span className="font-serif font-normal text-accent italic">.</span>
         </motion.h2>
@@ -114,7 +118,7 @@ export function Contact() {
           </Reveal>
 
           <Reveal delay={0.15}>
-            <form onSubmit={onSubmit} className="space-y-10 rounded-[2rem] border border-line bg-bg-elev/60 p-6 backdrop-blur sm:p-10">
+            <form onSubmit={onSubmit} className="space-y-10 rounded-[2rem] border border-line bg-bg-elev/80 p-6 sm:p-10">
               <div className="grid gap-10 sm:grid-cols-2">
                 <Field label="Nombre">
                   <input required name="name" autoComplete="name" placeholder="Tu nombre" className={inputCls} />

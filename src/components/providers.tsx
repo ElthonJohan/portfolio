@@ -3,21 +3,7 @@
 import { ReactLenis, useLenis } from "lenis/react";
 import { MotionConfig } from "motion/react";
 import { usePathname } from "next/navigation";
-import { createContext, useCallback, useContext, useEffect, useState } from "react";
-
-const IntroContext = createContext<{ done: boolean; finish: () => void }>({
-  done: false,
-  finish: () => {},
-});
-
-/** `true` cuando el preloader terminó: las animaciones de entrada esperan a esto. */
-export function useIntroDone() {
-  return useContext(IntroContext).done;
-}
-
-export function useFinishIntro() {
-  return useContext(IntroContext).finish;
-}
+import { useEffect } from "react";
 
 function ScrollToTopOnRouteChange() {
   const lenis = useLenis();
@@ -43,17 +29,12 @@ function ScrollToTopOnRouteChange() {
 }
 
 export function Providers({ children }: { children: React.ReactNode }) {
-  const [done, setDone] = useState(false);
-  const finish = useCallback(() => setDone(true), []);
-
   return (
-    <IntroContext value={{ done, finish }}>
-      <MotionConfig reducedMotion="user">
-        <ReactLenis root options={{ lerp: 0.09 }}>
-          <ScrollToTopOnRouteChange />
-          {children}
-        </ReactLenis>
-      </MotionConfig>
-    </IntroContext>
+    <MotionConfig reducedMotion="user">
+      <ReactLenis root options={{ lerp: 0.09 }}>
+        <ScrollToTopOnRouteChange />
+        {children}
+      </ReactLenis>
+    </MotionConfig>
   );
 }

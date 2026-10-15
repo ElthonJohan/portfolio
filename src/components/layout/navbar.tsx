@@ -4,13 +4,11 @@ import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/
 import { useState } from "react";
 import { Magnetic } from "@/components/ui/magnetic";
 import { SmoothLink } from "@/components/ui/smooth-link";
-import { useIntroDone } from "@/components/providers";
 import { nav, profile } from "@/data/site";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
 export function Navbar() {
-  const introDone = useIntroDone();
   const { scrollY } = useScroll();
   const [hidden, setHidden] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -19,21 +17,24 @@ export function Navbar() {
   // Se oculta al bajar y reaparece al subir.
   useMotionValueEvent(scrollY, "change", (v) => {
     const prev = scrollY.getPrevious() ?? 0;
-    setScrolled(v > 40);
-    setHidden(v > prev && v > 300 && !open);
+    if (Math.abs(v - prev) < 4) return; // ignora micro-movimientos
+    const nextScrolled = v > 40;
+    const nextHidden = v > prev && v > 300 && !open;
+    if (nextScrolled !== scrolled) setScrolled(nextScrolled);
+    if (nextHidden !== hidden) setHidden(nextHidden);
   });
 
   return (
     <>
       <motion.header
         className="fixed inset-x-0 top-0 z-50 px-4 pt-4 sm:px-6"
-        initial={{ y: -100 }}
-        animate={{ y: !introDone || hidden ? -100 : 0 }}
+        initial={false}
+        animate={{ y: hidden ? -100 : 0 }}
         transition={{ duration: 0.7, ease: EASE }}
       >
         <nav
-          className={`mx-auto flex max-w-7xl items-center justify-between rounded-full border px-3 py-2 transition-[background-color,border-color,backdrop-filter] duration-500 ${
-            scrolled || open ? "border-line bg-bg/70 backdrop-blur-xl" : "border-transparent"
+          className={`intro-nav mx-auto flex max-w-7xl items-center justify-between rounded-full border px-3 py-2 transition-[background-color,border-color] duration-500 ${
+            scrolled || open ? "border-line bg-bg/90 pointer-fine:bg-bg/70 pointer-fine:backdrop-blur-xl" : "border-transparent"
           }`}
         >
           <SmoothLink href="/#top" className="group flex items-center gap-2 pl-2" onClick={() => setOpen(false)}>
