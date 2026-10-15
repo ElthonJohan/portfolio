@@ -14,9 +14,9 @@ export const profile = {
   location: "Cajamarca, Perú", // TODO
   timezone: "America/Lima", // TODO: zona horaria IANA para el reloj del footer
   available: true,
-  email: "soporte@mail.jodevs.tech", // TODO
-  whatsapp: "922837138", // TODO: número con código de país, sin + ni espacios. Ej: 51999999999
-  siteUrl: "https://jodevs.tech", // TODO
+  email: "hola@jodevs.tech", // Cloudflare Email Routing lo reenvía a tu correo personal
+  whatsapp: "51922837138", // número con código de país, sin + ni espacios
+  siteUrl: "https://www.jodevs.tech", // dominio principal (jodevs.tech redirige aquí)
   tagline:
     "Diseño y construyo software a medida, sistemas empresariales e infraestructura que ayudan a las empresas a vender más, operar mejor y escalar sin fricción.",
   about: [

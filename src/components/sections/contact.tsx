@@ -1,7 +1,7 @@
 "use client";
 
-import { ArrowUpRight, Send } from "lucide-react";
-import { motion, useScroll, useTransform } from "motion/react";
+import { ArrowUpRight, Check, Copy, MessageCircle, RotateCcw, Send } from "lucide-react";
+import { AnimatePresence, motion, useScroll, useTransform } from "motion/react";
 import { useRef, useState } from "react";
 import { socialIcons } from "@/components/ui/icons";
 import { Magnetic } from "@/components/ui/magnetic";
@@ -30,9 +30,12 @@ export function Contact() {
   const x = useTransform(scrollYProgress, [0, 1], ["-20%", "0%"]);
   const [service, setService] = useState<string>("");
   const [budget, setBudget] = useState<string>("");
+  // Mensaje ya armado tras enviar: se muestra el panel con alternativas.
+  const [sent, setSent] = useState<{ subject: string; body: string } | null>(null);
 
-  // Sin backend todavía: el formulario arma un correo listo para enviar.
-  // TODO: conectar a un servicio (Resend, Formspree...) mediante un Route Handler.
+  // Sin backend: el formulario arma el correo y abre la app de correo del visitante.
+  // Si en su computadora no tiene una configurada, el panel posterior le ofrece copiar
+  // el email o enviar el mismo mensaje por WhatsApp.
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
@@ -46,6 +49,7 @@ export function Contact() {
       `${data.get("message")}`,
     ].join("\n");
     const subject = `Nuevo proyecto — ${data.get("company") || data.get("name")}`;
+    setSent({ subject, body });
     window.location.href = `mailto:${profile.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   }
 
@@ -117,8 +121,15 @@ export function Contact() {
             </ul>
           </Reveal>
 
-          <Reveal delay={0.15}>
-            <form onSubmit={onSubmit} className="space-y-10 rounded-[2rem] border border-line bg-bg-elev/80 p-6 sm:p-10">
+          <Reveal delay={0.15} className="relative">
+            <AnimatePresence>
+              {sent && <SentPanel subject={sent.subject} body={sent.body} onReset={() => setSent(null)} />}
+            </AnimatePresence>
+            <form
+              onSubmit={onSubmit}
+              inert={!!sent}
+              className={`space-y-10 rounded-[2rem] border border-line bg-bg-elev/80 p-6 transition-opacity duration-500 sm:p-10 ${sent ? "opacity-0" : ""}`}
+            >
               <div className="grid gap-10 sm:grid-cols-2">
                 <Field label="Nombre">
                   <input required name="name" autoComplete="name" placeholder="Tu nombre" className={inputCls} />
@@ -176,6 +187,70 @@ export function Contact() {
         </div>
       </div>
     </section>
+  );
+}
+
+const EASE = [0.16, 1, 0.3, 1] as const;
+
+/** Tras enviar: confirma y ofrece alternativas por si no se abrió la app de correo. */
+function SentPanel({ subject, body, onReset }: { subject: string; body: string; onReset: () => void }) {
+  const [copied, setCopied] = useState(false);
+
+  async function copyEmail() {
+    try {
+      await navigator.clipboard.writeText(profile.email);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2000);
+    } catch {}
+  }
+
+  return (
+    <motion.div
+      role="status"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 20 }}
+      transition={{ duration: 0.6, ease: EASE }}
+      className="absolute inset-0 z-10 flex flex-col justify-center rounded-[2rem] border border-accent/40 bg-bg-elev p-6 sm:p-10"
+    >
+      <span className="grid size-14 place-items-center rounded-full bg-accent text-accent-ink">
+        <Check className="size-6" strokeWidth={2.5} />
+      </span>
+      <h3 className="mt-8 text-3xl font-medium tracking-tight sm:text-4xl">¡Tu mensaje está listo!</h3>
+      <p className="mt-4 max-w-md leading-relaxed text-fg/60">
+        Se abrió tu app de correo con todo redactado: sólo pulsa enviar. ¿No se abrió? Copia mi email o envíame el mismo
+        mensaje por WhatsApp.
+      </p>
+      <div className="mt-8 flex flex-wrap gap-3">
+        <button
+          type="button"
+          onClick={copyEmail}
+          className="inline-flex items-center gap-2 rounded-full bg-accent px-5 py-3 font-medium text-accent-ink transition-transform active:scale-95"
+        >
+          {copied ? <Check className="size-4" /> : <Copy className="size-4" />}
+          {copied ? "¡Copiado!" : profile.email}
+        </button>
+        {profile.whatsapp && (
+          <a
+            href={`https://wa.me/${profile.whatsapp}?text=${encodeURIComponent(`${subject}\n\n${body}`)}`}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 rounded-full border border-line px-5 py-3 transition-colors hover:border-accent hover:text-accent"
+          >
+            <MessageCircle className="size-4" />
+            Enviar por WhatsApp
+          </a>
+        )}
+      </div>
+      <button
+        type="button"
+        onClick={onReset}
+        className="mt-8 inline-flex items-center gap-2 self-start font-mono text-xs tracking-wider text-muted uppercase transition-colors hover:text-fg"
+      >
+        <RotateCcw className="size-3.5" />
+        Volver al formulario
+      </button>
+    </motion.div>
   );
 }
 
