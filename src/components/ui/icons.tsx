@@ -1,4 +1,4 @@
-import { Bot, Boxes, Cloud, Monitor, Plug, Smartphone } from "lucide-react";
+import { Bot, Boxes, Cloud, Monitor, Network, ShieldCheck } from "lucide-react";
 import type { ServiceIcon } from "@/data/site";
 
 type P = { className?: string };
@@ -32,8 +32,8 @@ export const socialIcons = { github: GithubIcon, linkedin: LinkedinIcon, x: XIco
 export const serviceIcons: Record<ServiceIcon, typeof Monitor> = {
   web: Monitor,
   erp: Boxes,
-  mobile: Smartphone,
-  api: Plug,
   cloud: Cloud,
+  network: Network,
+  security: ShieldCheck,
   ai: Bot,
 };

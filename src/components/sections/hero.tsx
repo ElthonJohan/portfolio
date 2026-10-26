@@ -7,8 +7,8 @@ import { Magnetic } from "@/components/ui/magnetic";
 import { SmoothLink } from "@/components/ui/smooth-link";
 import { profile } from "@/data/site";
 
-const HEADLINE = "Construyo software que impulsa a tu empresa a crecer.";
-const ACCENT_WORDS = new Set(["impulsa", "crecer."]);
+const HEADLINE = profile.headline;
+const ACCENT_WORDS = new Set(profile.headlineAccent);
 
 export function Hero() {
   const ref = useRef<HTMLElement>(null);
@@ -77,7 +77,7 @@ export function Hero() {
       </div>
 
       <motion.div style={{ scale, opacity, y }} className="relative mx-auto w-full max-w-7xl origin-bottom will-change-transform">
-        <div {...fadeUp(100)} className="intro-fade mb-8 flex flex-wrap items-center gap-3">
+        {/* <div {...fadeUp(100)} className="intro-fade mb-8 flex flex-wrap items-center gap-3">
           {profile.available && (
             <span className="inline-flex items-center gap-2 rounded-full border border-line bg-white/[0.04] px-3 py-1.5 text-xs text-fg/80">
               <span className="size-2 animate-pulse-dot rounded-full bg-accent" />
@@ -85,7 +85,7 @@ export function Hero() {
             </span>
           )}
           <span className="font-mono text-xs tracking-wider text-muted uppercase">{profile.location}</span>
-        </div>
+        </div> */}
 
         <h1
           aria-label={HEADLINE}

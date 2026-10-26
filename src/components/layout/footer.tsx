@@ -30,7 +30,9 @@ export function Footer() {
         <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-4">
           <div className="lg:col-span-2">
             <p className="text-2xl font-medium tracking-tight">{profile.brand}</p>
-            <p className="mt-3 max-w-sm text-fg/60">{profile.role}</p>
+            <p className="mt-3 max-w-sm text-fg/60">
+              {profile.brandType}. Fundado por {profile.name}, ingeniero de sistemas.
+            </p>
           </div>
           <div>
             <p className="font-mono text-xs tracking-wider text-muted uppercase">Navegación</p>

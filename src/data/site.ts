@@ -10,6 +10,9 @@
 export const profile = {
   name: "Elthon Guevara", // TODO
   brand: "JoDevs",
+  siteName: "JoDevs Studio", // nombre que Google muestra sobre el resultado de búsqueda
+  brandType: "Estudio de desarrollo de software, DevOps, redes y ciberseguridad",
+  founderRole: "Fundador e Ingeniero de Sistemas",
   role: "Desarrollador de Software & Ingeniero de Sistemas",
   location: "Cajamarca, Perú", // TODO
   timezone: "America/Lima", // TODO: zona horaria IANA para el reloj del footer
@@ -17,11 +20,13 @@ export const profile = {
   email: "hola@jodevs.tech", // Cloudflare Email Routing lo reenvía a tu correo personal
   whatsapp: "51922837138", // número con código de país, sin + ni espacios
   siteUrl: "https://www.jodevs.tech", // dominio principal (jodevs.tech redirige aquí)
+  headline: "Construimos software que impulsa a tu empresa a crecer.",
+  headlineAccent: ["impulsa", "crecer."], // palabras en serif itálica y color de acento
   tagline:
-    "Diseño y construyo software a medida, sistemas empresariales e infraestructura que ayudan a las empresas a vender más, operar mejor y escalar sin fricción.",
+    "Somos un estudio de tecnología: desarrollamos software a medida, automatizamos tu infraestructura y protegemos tus sistemas para ayudar a las empresas a vender más, operar mejor y escalar sin fricción.",
   about: [
-    "Soy ingeniero de sistemas y desarrollador full‑stack. Uno la visión técnica de la ingeniería con el detalle del producto: entiendo cómo funciona tu negocio y lo traduzco en software que se usa, se mantiene y crece.",
-    "Trabajo de punta a punta: desde el análisis de procesos y la arquitectura, hasta el despliegue en la nube, la automatización y el soporte. Sin intermediarios, con comunicación directa y entregas frecuentes.",
+    "JoDevs es un estudio de desarrollo de software, DevOps, redes y ciberseguridad fundado por Elthon Guevara, ingeniero de sistemas. Unimos la visión técnica de la ingeniería con el detalle del producto: entendemos cómo funciona tu negocio y lo traducimos en software que se usa, se mantiene y crece.",
+    "En JoDevs trabajamos de punta a punta: desde el análisis de procesos y la arquitectura, hasta la nube, la red, la seguridad y el soporte. Sin intermediarios, con comunicación directa y entregas frecuentes.",
   ],
   stats: [
     { value: 5, suffix: "+", label: "Años de experiencia" }, // TODO
@@ -41,7 +46,7 @@ export const nav = [
   { label: "Servicios", href: "/#servicios" },
   { label: "Proyectos", href: "/#proyectos" },
   { label: "Proceso", href: "/#proceso" },
-  { label: "Sobre mí", href: "/#sobre-mi" },
+  { label: "Nosotros", href: "/#nosotros" },
 ];
 
 export const stack = [
@@ -63,7 +68,7 @@ export const stack = [
   "Git & CI/CD",
 ];
 
-export type ServiceIcon = "web" | "erp" | "mobile" | "api" | "cloud" | "ai";
+export type ServiceIcon = "web" | "erp" | "cloud" | "network" | "security" | "ai";
 
 export const services: {
   icon: ServiceIcon;
@@ -73,44 +78,44 @@ export const services: {
 }[] = [
   {
     icon: "web",
-    title: "Desarrollo web a medida",
+    title: "Desarrollo web y móvil",
     description:
-      "Sitios y aplicaciones web rápidas, accesibles y optimizadas para SEO que convierten visitas en clientes.",
-    items: ["Landing pages y sitios corporativos", "E‑commerce", "Portales y paneles de cliente"],
+      "Sitios, aplicaciones web y apps multiplataforma rápidas, accesibles y optimizadas para SEO que convierten visitas en clientes.",
+    items: ["Sitios corporativos y e‑commerce", "Apps iOS / Android / PWA", "Portales y paneles de cliente"],
   },
   {
     icon: "erp",
-    title: "Sistemas empresariales",
+    title: "Software empresarial e integraciones",
     description:
-      "Software de gestión adaptado a tus procesos: inventario, ventas, facturación, RR.HH. y reportes en tiempo real.",
-    items: ["ERP / CRM a medida", "Dashboards y BI", "Roles, permisos y auditoría"],
-  },
-  {
-    icon: "mobile",
-    title: "Aplicaciones móviles",
-    description:
-      "Apps multiplataforma para iOS y Android con una sola base de código, conectadas a tus sistemas.",
-    items: ["React Native / PWA", "Notificaciones y modo offline", "Publicación en tiendas"],
-  },
-  {
-    icon: "api",
-    title: "APIs e integraciones",
-    description:
-      "Conecto tus herramientas entre sí: pasarelas de pago, facturación electrónica, ERPs, CRMs y servicios externos.",
-    items: ["APIs REST / GraphQL", "Pasarelas de pago", "Migración de datos"],
+      "Sistemas de gestión adaptados a tus procesos y conectados con tus herramientas: pagos, facturación electrónica y servicios externos.",
+    items: ["ERP / CRM a medida", "APIs REST / GraphQL", "Dashboards y BI"],
   },
   {
     icon: "cloud",
-    title: "Cloud, DevOps e infraestructura",
+    title: "DevOps y cloud",
     description:
-      "Despliegues seguros y automatizados, servidores, redes y monitoreo para que tu sistema no se caiga.",
-    items: ["AWS / VPS / Docker", "CI/CD y backups", "Seguridad y redes"],
+      "Despliegues automatizados, contenedores y monitoreo para que tu sistema escale y no se caiga.",
+    items: ["AWS / VPS / Docker", "CI/CD y automatización", "Monitoreo, backups y alta disponibilidad"],
+  },
+  {
+    icon: "network",
+    title: "Redes e infraestructura",
+    description:
+      "Diseñamos, implementamos y administramos la red y los servidores de tu empresa, en oficina o en la nube.",
+    items: ["Cableado estructurado y Wi‑Fi", "Servidores Linux / Windows", "VPN y conectividad entre sedes"],
+  },
+  {
+    icon: "security",
+    title: "Ciberseguridad",
+    description:
+      "Protegemos tus sistemas y datos: detectamos vulnerabilidades, endurecemos la infraestructura y preparamos a tu equipo.",
+    items: ["Auditorías y pentesting", "Firewalls y hardening", "Políticas de acceso y respaldo"],
   },
   {
     icon: "ai",
     title: "Automatización & IA",
     description:
-      "Elimino tareas repetitivas con flujos automáticos, bots e inteligencia artificial aplicada a tu negocio.",
+      "Eliminamos tareas repetitivas con flujos automáticos, bots e inteligencia artificial aplicada a tu negocio.",
     items: ["Chatbots y asistentes", "Automatización de procesos", "Extracción y análisis de datos"],
   },
 ];
@@ -119,22 +124,22 @@ export const process = [
   {
     title: "Descubrimiento",
     description:
-      "Nos reunimos para entender tu negocio, tus objetivos y el problema real. Defino alcance, prioridades y presupuesto claro.",
+      "Nos reunimos para entender tu negocio, tus objetivos y el problema real. Definimos alcance, prioridades y presupuesto claro.",
   },
   {
     title: "Diseño & arquitectura",
     description:
-      "Prototipo la experiencia y diseño la arquitectura técnica para que el sistema sea escalable y fácil de mantener.",
+      "Prototipamos la experiencia y diseñamos la arquitectura técnica para que el sistema sea escalable y fácil de mantener.",
   },
   {
     title: "Desarrollo iterativo",
     description:
-      "Construyo en ciclos cortos con demos frecuentes. Ves el avance real cada semana y ajustamos sobre la marcha.",
+      "Construimos en ciclos cortos con demos frecuentes. Ves el avance real cada semana y ajustamos sobre la marcha.",
   },
   {
     title: "Lanzamiento & soporte",
     description:
-      "Despliego, capacito a tu equipo y acompaño la operación con monitoreo, mejoras y soporte continuo.",
+      "Desplegamos, capacitamos a tu equipo y acompañamos la operación con monitoreo, mejoras y soporte continuo.",
   },
 ];
 
@@ -162,7 +167,7 @@ export const projects: Project[] = [
     slug: "sistema-pos",
     title: "Tentto SaaS",
     category: "Sistema empresarial",
-    year: "2025",
+    year: "2026",
     summary:
       "Plataforma de gestión, ventas y facturación electrónica para negocios gastronómicos con múltiples sucursales.",
     description: [
@@ -179,24 +184,24 @@ export const projects: Project[] = [
     links: { live: "https://pos.tentto.app/home" },
   },
   {
-    slug: "app-reservas",
-    title: "Agendo",
+    slug: "app-unimatch",
+    title: "Go Unimatch",
     category: "App móvil",
-    year: "2025",
+    year: "2026",
     summary:
-      "App de reservas y pagos para clínicas y centros de servicio, con recordatorios automáticos por WhatsApp.",
+      "App red social para estudiantes universitarios que conecta a compañeros de clase, clubes y eventos en tiempo real.",
     description: [
-      "Aplicación móvil y panel web para gestionar citas, profesionales, horarios y pagos en línea.",
-      "Los clientes reservan en segundos y reciben recordatorios automáticos, reduciendo inasistencias.",
+      "App móvil multiplataforma con chat, grupos, eventos y notificaciones push para mantener a los estudiantes conectados y organizados.",
+      "Incluye un sistema de autenticación con correo institucional, perfiles de usuario y un feed de noticias personalizado.",
     ],
     challenge:
-      "Las citas se agendaban por teléfono, con un alto porcentaje de ausencias y doble reserva de horarios.",
+      "Los estudiantes no tienen una plataforma centralizada para comunicarse, organizar eventos y compartir información académica, lo que genera desinformación y baja participación.",
     solution:
-      "App en React Native con calendario en tiempo real, pagos anticipados y un bot de WhatsApp para confirmaciones y recordatorios.",
-    results: ["−60% de inasistencias", "+2.000 reservas al mes", "Pagos anticipados integrados"],
-    tags: ["React Native", "Node.js", "MongoDB", "WhatsApp API"],
+      "App en React Native con backend en Node.js y MongoDB, con notificaciones push y sincronización en tiempo real para chats y eventos.",
+    results: ["+50% de participación en eventos", "Reducción de desinformación académica"],
+    tags: ["React Native", "Node.js", "MongoDB", "Socket.io", "Firebase"],
     palette: ["#7c5cff", "#ff7ab6"],
-    links: { live: "#" },
+    links: { live: "https://www.gounimatch.app/" },
   },
   {
     slug: "sistema-administrativo",

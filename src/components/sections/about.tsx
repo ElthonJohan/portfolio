@@ -58,10 +58,10 @@ function Counter({ value, suffix }: { value: number; suffix: string }) {
 
 export function About() {
   return (
-    <section id="sobre-mi" className="relative px-4 py-28 sm:px-6 sm:py-40">
+    <section id="nosotros" className="relative px-4 py-28 sm:px-6 sm:py-40">
       <div className="mx-auto grid max-w-7xl gap-14 lg:grid-cols-[280px_1fr]">
         <Reveal>
-          <p className="font-mono text-xs tracking-widest text-muted uppercase">(04) — Sobre mí</p>
+          <p className="font-mono text-xs tracking-widest text-muted uppercase">(04) — Nosotros</p>
         </Reveal>
 
         <div>

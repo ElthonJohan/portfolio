@@ -17,8 +17,9 @@ const instrumentSerif = Instrument_Serif({
   style: ["normal", "italic"],
 });
 
-const defaultTitle = `${profile.name} — ${profile.role} | ${profile.brand}`;
-const description = `${profile.tagline} ${profile.role} en ${profile.location}.`;
+// La marca va primero para que "JoDevs" sea lo que Google asocie con el sitio.
+const defaultTitle = `${profile.siteName} — Desarrollo de software, DevOps y ciberseguridad | ${profile.name}`;
+const description = `${profile.brand} es un ${profile.brandType.charAt(0).toLowerCase()}${profile.brandType.slice(1)} en ${profile.location}, fundado por ${profile.name}, ingeniero de sistemas.`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(profile.siteUrl),
@@ -28,20 +29,28 @@ export const metadata: Metadata = {
   },
   description,
   keywords: [
-    profile.name,
     profile.brand,
-    "desarrollador de software",
-    "desarrollador web",
+    "Jo Devs",
+    "JoDevs estudio",
+    profile.name,
+    `${profile.name} ${profile.brand}`,
+    "estudio de desarrollo de software",
+    "agencia de desarrollo de software",
+    "DevOps",
+    "redes",
+    "ciberseguridad",
+    "infraestructura cloud",
     "ingeniero de sistemas",
     "software a medida",
     "sistemas empresariales",
     "desarrollo de aplicaciones",
-    "freelance",
     "Cajamarca",
     "Perú",
   ],
   authors: [{ name: profile.name, url: profile.siteUrl }],
   creator: profile.name,
+  publisher: profile.brand,
+  applicationName: profile.siteName,
   alternates: { canonical: "/" },
   robots: {
     index: true,
@@ -52,7 +61,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "es_PE",
     url: "/",
-    siteName: profile.brand,
+    siteName: profile.siteName,
     title: defaultTitle,
     description,
   },
